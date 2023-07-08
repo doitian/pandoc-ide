@@ -1,0 +1,5 @@
+defaults:
+- latex
+input-files:
+- manuscript.md
+output-file: output/manuscript.pdf

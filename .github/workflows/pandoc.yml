@@ -1,0 +1,33 @@
+name: Pandoc
+
+on: push
+
+jobs:
+  list-projects:
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.list-projects.outputs.projects }}
+    steps:
+    - uses: actions/checkout@v2
+    - id: list-projects
+      run: echo "projects=[$(printf '"%s" ' */pandoc.yaml)]" | sed -e 's/" "/","/g' -e 's;/pandoc.yaml";";' > $GITHUB_OUTPUT
+
+  pandoc:
+    needs: list-projects
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ${{fromJson(needs.list-projects.outputs.projects)}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: pandoc
+      run: |
+        cd "${{ matrix.project }}"
+        mkdir output
+        ../bin/pandoc -d pandoc
+        mv output ..
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.project }}
+        path: output
