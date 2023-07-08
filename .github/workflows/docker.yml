@@ -6,7 +6,8 @@ on:
     branches:
       - master
     paths:
-      - docker
+      - 'docker/**'
+      - '.github/workflows/docker.yml'
 
 jobs:
   build-push:
