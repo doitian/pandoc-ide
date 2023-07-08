@@ -1,0 +1,5 @@
+#!/bin/sh
+
+docker run --rm -it --entrypoint /bin/bash \
+    --volume "$(pwd):/data" \
+    ghcr.io/doitian/pandoc-ide
