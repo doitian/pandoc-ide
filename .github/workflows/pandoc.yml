@@ -23,9 +23,10 @@ jobs:
     - name: pandoc
       run: |
         cd "${{ matrix.project }}"
-        mkdir output
         ../bin/pandoc -d pandoc
-        mv output ..
+        cd ..
+        mkdir output
+        git ls-files -oz | xargs -0 -J % mv % output
 
     - uses: actions/upload-artifact@v3
       with:
