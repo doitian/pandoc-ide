@@ -17,3 +17,17 @@ docker run --rm \
     ghcr.io/doitian/pandoc-ide \
     -i test.md -o test.html
 ```
+
+## Packaged Defaults and Filters
+
+This repository and the docker image has packaged [my Pandoc defaults, filters, and resources](https://github.com/doitian/dotfiles-public/tree/master/pandoc).
+
+For example, to use options file `latex.yaml` for LaTeX and PDF, add the command line arguments `-d latex`:
+
+```
+docker run --rm \
+    --volume "$(pwd):/data" \
+    --user "$(id -u):$(id -g)" \
+    ghcr.io/doitian/pandoc-ide \
+    -d latex -i test.md -o test.pdf
+```
