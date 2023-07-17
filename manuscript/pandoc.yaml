@@ -1,7 +1,5 @@
 defaults:
 - latex-zh
-filters:
-- drop-first.lua
 metadata:
   fullwidthTags: CodeBlock
 input-files:
