@@ -75,6 +75,7 @@ txSkeleton = txSkeleton.update("inputs", (inputs) => {
 The definition of `TransactionSkeleton` can be found in the documentation for [Interface TransactionSkeletonInterface](https://lumos-website-git-stable-magickbase.vercel.app/api/interfaces/helpers.transactionskeletoninterface.html). This interface includes three fields that are not present in CKB transactions.
 
 - `fixedEntries` flags frozen entries. For instance, the example below shows how to freeze the first input:
+
     ```javascript
     txSkeleton.update("fixedEntries", (entries) =>
       entries.push({field:"inputs", index: 0})
@@ -88,6 +89,7 @@ The definition of `TransactionSkeleton` can be found in the documentation for [I
 I would like to address two issues.
 
 1. Although the high-level APIs can be complex and demand several parameters, they often don't offer customization options for all use cases. My recommendation is to employ the Builder Pattern for refactoring, which is structured as follows:
+
     ```javascript
     const txSkeleton = await common.transfer()
       .from(fromInfos)
@@ -95,6 +97,7 @@ I would like to address two issues.
       .amount(BigInt(3500 * 10 ** 8))
       .build(txSkeleton);
     ```
+    
 2. Implementing a custom lock script can be challenging due to the lack of documentation and exported helper functions. Nevertheless, to use Lumos' type scripts alongside a custom lock script, it's necessary to implement the latter. This is because the live cell collector and the signing process are intertwined. Lumos is only able to collect cells that it knows how to unlock.
 
 ## CKB Cli
@@ -328,6 +331,7 @@ The complexity rises when dealing with script composition and integrating dApps 
 I believe it's crucial to have a language-independent standard to describe how to build a transaction. Here I propose two potential solutions that could inspire innovative approaches.
 
 1. Define a standard format for describing how transactions are constructed. SDKs can either parse and execute the construction instructions at runtime, or generate the code beforehand. Following is the example format in YAML:
+
     ```yaml
     steps:
     - uses: add-input
@@ -341,4 +345,5 @@ I believe it's crucial to have a language-independent standard to describe how t
           ckb:
             gt: 100
     ```
+    
 2. Develop a transaction construction service and encourage developers to contribute custom modules for their dApps in the service. SDKs calls RPC methods of this service to build transactions. Since SDKs are already using external services such as ckb-indexer to create transactions, moving all of the transaction constructing logic to external services won't change the use of the SDK much.
