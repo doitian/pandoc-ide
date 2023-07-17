@@ -1,5 +1,6 @@
 defaults:
 - latex-zh
+toc: true
 metadata:
   fullwidthTags: CodeBlock
 input-files:
