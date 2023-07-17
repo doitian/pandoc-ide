@@ -231,7 +231,9 @@ tx := &types.Transaction{
 		common.FromHex("0x55000000100000005500000055000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
 	},
 }
+```
 
+```go
 scriptGroups := []*transaction.ScriptGroup{
 	&transaction.ScriptGroup{
 		Script: types.Script{
@@ -345,5 +347,5 @@ I believe it's crucial to have a language-independent standard to describe how t
           ckb:
             gt: 100
     ```
-    
+
 2. Develop a transaction construction service and encourage developers to contribute custom modules for their dApps in the service. SDKs calls RPC methods of this service to build transactions. Since SDKs are already using external services such as ckb-indexer to create transactions, moving all of the transaction constructing logic to external services won't change the use of the SDK much.
