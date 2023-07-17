@@ -1,5 +1,9 @@
 defaults:
-- latex
+- latex-zh
+filters:
+- drop-first.lua
+metadata:
+  fullwidthTags: CodeBlock
 input-files:
 - manuscript.md
 output-file: manuscript.pdf
