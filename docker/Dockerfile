@@ -22,7 +22,7 @@ RUN curl -LO https://github.com/lxgw/LxgwWenKai/releases/download/v1.300/lxgw-we
   && curl -LO https://github.com/13rac1/twemoji-color-font/releases/download/v14.0.2/TwitterColorEmoji-SVGinOT-Linux-14.0.2.tar.gz \
   && tar -xzf TwitterColorEmoji-SVGinOT-Linux-14.0.2.tar.gz \
   && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip \
-  && unzip NerdFontsSymbolsOnly.zip \
+  && unzip -d NerdFontsSymbolsOnly NerdFontsSymbolsOnly.zip \
   && mkdir -p /fonts/lxgw-wenkai \
   && mv lxgw-wenkai-v1.300/*.ttf /fonts/lxgw-wenkai/ \
   && mkdir -p /fonts/lxgw-bright-gb \
