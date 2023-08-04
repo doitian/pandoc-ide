@@ -15,21 +15,21 @@ RUN apt-get -q --no-allow-insecure-repositories update \
 # Builder ###############################################################
 FROM ubuntu-builder-base as ubuntu-builder
 
-RUN curl -LO \
-      https://github.com/lxgw/LxgwWenKai/releases/download/v1.300/lxgw-wenkai-v1.300.zip \
+RUN curl -LO https://github.com/lxgw/LxgwWenKai/releases/download/v1.300/lxgw-wenkai-v1.300.zip \
   && unzip lxgw-wenkai-v1.300.zip \
-  && curl -LO \
-       https://github.com/lxgw/LxgwBright/releases/download/v5.300/LXGWBrightGB.7z \
+  && curl -LO https://github.com/lxgw/LxgwBright/releases/download/v5.300/LXGWBrightGB.7z \
   && 7zr x LXGWBrightGB.7z \
-  && curl -LO \
-       https://github.com/13rac1/twemoji-color-font/releases/download/v14.0.2/TwitterColorEmoji-SVGinOT-Linux-14.0.2.tar.gz \
+  && curl -LO https://github.com/13rac1/twemoji-color-font/releases/download/v14.0.2/TwitterColorEmoji-SVGinOT-Linux-14.0.2.tar.gz \
   && tar -xzf TwitterColorEmoji-SVGinOT-Linux-14.0.2.tar.gz \
+  && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip \
+  && unzip NerdFontsSymbolsOnly.zip \
   && mkdir -p /fonts/lxgw-wenkai \
   && mv lxgw-wenkai-v1.300/*.ttf /fonts/lxgw-wenkai/ \
   && mkdir -p /fonts/lxgw-bright-gb \
   && mv LXGWBrightGB/*.otf /fonts/lxgw-bright-gb/ \
   && mkdir -p /fonts/twitter-color-emoji \
-  && mv TwitterColorEmoji-SVGinOT-Linux-14.0.2/TwitterColorEmoji-SVGinOT.ttf /fonts/twitter-color-emoji/
+  && mv TwitterColorEmoji-SVGinOT-Linux-14.0.2/TwitterColorEmoji-SVGinOT.ttf /fonts/twitter-color-emoji/ \
+  && mv NerdFontsSymbolsOnly /fonts/symbols-nerd-font
 
 RUN git clone --depth=1 --quiet \
   https://github.com/doitian/dotfiles-public \
@@ -42,9 +42,9 @@ FROM pandoc/latex:latest-ubuntu as pandoc-ide
 RUN apt-get -q --no-allow-insecure-repositories update \
   && DEBIAN_FRONTEND=noninteractive \
      apt-get install --assume-yes --no-install-recommends \
-       fonts-ibm-plex \
        fonts-lato \
        fonts-jetbrains-mono \
+       fonts-noto \
        fonts-noto-cjk \
   && rm -rf /var/lib/apt/lists/*
 
