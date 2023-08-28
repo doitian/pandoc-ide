@@ -15,16 +15,8 @@ RUN apt-get -q --no-allow-insecure-repositories update \
 # Builder ###############################################################
 FROM ubuntu-builder-base as ubuntu-builder
 
-RUN curl -LO https://github.com/lxgw/LxgwWenKai/releases/download/v1.300/lxgw-wenkai-v1.300.zip \
-  && unzip lxgw-wenkai-v1.300.zip \
-  && curl -LO https://github.com/lxgw/LxgwBright/releases/download/v5.300/LXGWBrightGB.7z \
-  && 7zr x LXGWBrightGB.7z \
-  && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip \
+RUN curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip \
   && unzip -d NerdFontsSymbolsOnly NerdFontsSymbolsOnly.zip \
-  && mkdir -p /fonts/lxgw-wenkai \
-  && mv lxgw-wenkai-v1.300/*.ttf /fonts/lxgw-wenkai/ \
-  && mkdir -p /fonts/lxgw-bright-gb \
-  && mv LXGWBrightGB/*.otf /fonts/lxgw-bright-gb/ \
   && mv NerdFontsSymbolsOnly /fonts/symbols-nerd-font
 
 RUN git clone --depth=1 --quiet \
