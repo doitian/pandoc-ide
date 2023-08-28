@@ -8,9 +8,9 @@ jobs:
     outputs:
       projects: ${{ steps.list-projects.outputs.projects }}
     steps:
-    - uses: actions/checkout@v2
-    - id: list-projects
-      run: echo "projects=[$(printf '"%s" ' */pandoc.yaml)]" | sed -e 's/" "/","/g' -e 's;/pandoc.yaml";";' > $GITHUB_OUTPUT
+      - uses: actions/checkout@v3
+      - id: list-projects
+        run: echo "projects=[$(printf '"%s" ' */pandoc.yaml)]" | sed -e 's/" "/","/g' -e 's;/pandoc.yaml";";' > $GITHUB_OUTPUT
 
   pandoc:
     needs: list-projects
@@ -19,16 +19,16 @@ jobs:
       matrix:
         project: ${{fromJson(needs.list-projects.outputs.projects)}}
     steps:
-    - uses: actions/checkout@v2
-    - name: pandoc
-      run: |
-        cd "${{ matrix.project }}"
-        ../bin/pandoc -d pandoc
-        cd ..
-        mkdir output
-        git ls-files -oz | xargs -0 -I % mv % output
+      - uses: actions/checkout@v3
+      - name: pandoc
+        run: |
+          cd "${{ matrix.project }}"
+          ../bin/pandoc -d pandoc
+          cd ..
+          mkdir output
+          git ls-files -oz | xargs -0 -I % mv % output
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: ${{ matrix.project }}
-        path: output
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.project }}
+          path: output
