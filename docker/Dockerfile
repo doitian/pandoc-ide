@@ -17,6 +17,7 @@ FROM ubuntu-builder-base as ubuntu-builder
 
 RUN curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip \
   && unzip -d NerdFontsSymbolsOnly NerdFontsSymbolsOnly.zip \
+  && mkdir -p /fonts \
   && mv NerdFontsSymbolsOnly /fonts/symbols-nerd-font
 
 RUN git clone --depth=1 --quiet \
