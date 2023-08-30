@@ -39,7 +39,7 @@ RUN apt-get -q --no-allow-insecure-repositories update \
        fonts-lato \
        fonts-inter \
        fonts-roboto-slab \
-       fonts-cascadia-code \
+       fonts-firacode \
        fonts-noto-cjk \
   && rm -rf /var/lib/apt/lists/*
 
