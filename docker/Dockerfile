@@ -15,10 +15,15 @@ RUN apt-get -q --no-allow-insecure-repositories update \
 # Builder ###############################################################
 FROM ubuntu-builder-base as ubuntu-builder
 
-RUN curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip \
+RUN curl -fsSLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip \
   && unzip -d NerdFontsSymbolsOnly NerdFontsSymbolsOnly.zip \
-  && mkdir -p /fonts \
-  && mv NerdFontsSymbolsOnly /fonts/symbols-nerd-font
+  && curl -fsSLO https://github.com/googlefonts/atkinson-hyperlegible/raw/main/fonts/otf/AtkinsonHyperlegible-Regular.otf \
+  && curl -fsSLO https://github.com/googlefonts/atkinson-hyperlegible/raw/main/fonts/otf/AtkinsonHyperlegible-Italic.otf \
+  && curl -fsSLO https://github.com/googlefonts/atkinson-hyperlegible/raw/main/fonts/otf/AtkinsonHyperlegible-Bold.otf \
+  && curl -fsSLO https://github.com/googlefonts/atkinson-hyperlegible/raw/main/fonts/otf/AtkinsonHyperlegible-BoldItalic.otf \
+  && mkdir -p /fonts /fonts/atkinson-hyperlegible \
+  && mv NerdFontsSymbolsOnly /fonts/symbols-nerd-font \
+  && mv AtkinsonHyperlegible-*.otf /fonts/atkinson-hyperlegible
 
 RUN git clone --depth=1 --quiet \
   https://github.com/doitian/dotfiles-public \
@@ -34,7 +39,6 @@ RUN apt-get -q --no-allow-insecure-repositories update \
        fonts-lato \
        fonts-roboto-slab \
        fonts-cascadia-code \
-       fonts-noto \
        fonts-noto-cjk \
   && rm -rf /var/lib/apt/lists/*
 
