@@ -26,7 +26,7 @@ RUN curl -fsSLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2
   && mv AtkinsonHyperlegible-*.otf /fonts/atkinson-hyperlegible
 
 RUN git clone --depth=1 --quiet https://github.com/doitian/dotfiles-public /dotfiles-public \
-  && git -C /dotfiles-public checkout 01e9398e6aafe969b9a86715c280df5e329ea88c
+  && git -C /dotfiles-public checkout bdfb6ab769cbd3da715cb57fa92689ca99ebd7cc
 
 # Output ################################################################
 FROM pandoc/latex:latest-ubuntu as pandoc-ide
@@ -38,7 +38,7 @@ RUN apt-get -q --no-allow-insecure-repositories update \
        fonts-lato \
        fonts-inter \
        fonts-roboto-slab \
-       fonts-firacode \
+       fonts-jetbrains-mono \
        fonts-noto-cjk \
   && rm -rf /var/lib/apt/lists/*
 
