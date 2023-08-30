@@ -37,6 +37,7 @@ RUN apt-get -q --no-allow-insecure-repositories update \
   && DEBIAN_FRONTEND=noninteractive \
      apt-get install --assume-yes --no-install-recommends \
        fonts-lato \
+       fonts-inter \
        fonts-roboto-slab \
        fonts-cascadia-code \
        fonts-noto-cjk \
