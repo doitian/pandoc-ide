@@ -26,7 +26,7 @@ RUN curl -fsSLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2
   && mv AtkinsonHyperlegible-*.otf /fonts/atkinson-hyperlegible
 
 RUN git clone --depth=1 --quiet https://github.com/doitian/dotfiles-public /dotfiles-public \
-  && git -C /dotfiles-public checkout bdfb6ab769cbd3da715cb57fa92689ca99ebd7cc
+  && git -C /dotfiles-public checkout a5e534ce8449f0c346a5c968aa40c81e74211817
 
 # Output ################################################################
 FROM pandoc/latex:latest-ubuntu as pandoc-ide
@@ -45,7 +45,7 @@ RUN apt-get -q --no-allow-insecure-repositories update \
 RUN tlmgr install \
       koma-script adjustbox tcolorbox collectbox ucs environ \
       trimspaces titling enumitem rsfs xecjk fvextra svg transparent \
-      xpatch changepage ifoddpage lineno \
+      xpatch changepage ifoddpage lineno haranoaji \
   && TERM=dumb luaotfload-tool --update
 
 COPY --from=ubuntu-builder \
