@@ -1,6 +1,6 @@
 defaults:
-- latex
+  - xelatex-reprt
 toc: true
 input-files:
-- manuscript.md
+  - manuscript.md
 output-file: manuscript.pdf
