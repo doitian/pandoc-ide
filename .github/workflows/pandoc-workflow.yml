@@ -8,7 +8,7 @@ jobs:
     outputs:
       projects: ${{ steps.list-projects.outputs.projects }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: list-projects
         run: echo "projects=[$(printf '"%s" ' */pandoc.yaml)]" | sed -e 's/" "/","/g' -e 's;/pandoc.yaml";";' > $GITHUB_OUTPUT
 
@@ -19,7 +19,7 @@ jobs:
       matrix:
         project: ${{fromJson(needs.list-projects.outputs.projects)}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: pandoc
         run: |
           cd "${{ matrix.project }}"
@@ -28,7 +28,7 @@ jobs:
           mkdir output
           git ls-files -oz | xargs -0 -I % mv % output
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.project }}
           path: output
