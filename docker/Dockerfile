@@ -55,9 +55,8 @@ COPY --from=ubuntu-builder \
 
 COPY --from=ubuntu-builder \
   /dotfiles-public/pandoc \
-  /.pandoc
+  /.local/share/pandoc
 
-RUN ln -s /.pandoc /root/.pandoc \
-  && ln -s /.local /root/.local \
+RUN ln -s /.local /root/.local \
   && fc-cache -f
 
