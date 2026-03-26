@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: list-projects
-        run: echo "projects=[$(printf '"%s" ' */pandoc.yaml)]" | sed -e 's/" "/","/g' -e 's;/pandoc.yaml";";' > $GITHUB_OUTPUT
+        run: echo "projects=[$(printf '"%s" ' */pandoc.yaml)]" | sed -e 's/" "/","/g' -e 's;/pandoc.yaml";";g' > $GITHUB_OUTPUT
 
   pandoc:
     needs: list-projects
