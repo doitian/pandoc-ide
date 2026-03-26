@@ -36,19 +36,25 @@ function CodeBlock(el)
 
   diagram_count = diagram_count + 1
 
-  local tmpdir = os.tmpname()
-  os.remove(tmpdir)
-  os.execute("mkdir -p " .. tmpdir)
+  -- Use pandoc's sha1 for a unique, safe directory name under /tmp
+  local hash = pandoc.utils.sha1(el.text .. tostring(diagram_count))
+  local tmpdir = "/tmp/mermaid-" .. hash
+  os.execute('mkdir -p "' .. tmpdir .. '"')
 
   local infile = tmpdir .. "/input.mmd"
   local outfile = tmpdir .. "/output.png"
 
-  local f = io.open(infile, "w")
+  local f, err = io.open(infile, "w")
+  if not f then
+    io.stderr:write("mermaid filter: cannot write temp file: " .. (err or "") .. "\n")
+    os.execute('rm -rf "' .. tmpdir .. '"')
+    return nil
+  end
   f:write(el.text)
   f:close()
 
   local cmd = string.format(
-    "mmdc -i %s -o %s -b transparent -w 800 2>/dev/null",
+    'mmdc -i "%s" -o "%s" -b transparent -w 800 2>/dev/null',
     infile, outfile
   )
   local success = os.execute(cmd)
@@ -59,22 +65,21 @@ function CodeBlock(el)
     if imgf then
       -- Copy image to working directory so pandoc can find it
       local imgname = string.format("mermaid-%d.png", diagram_count)
-      local outf = io.open(imgname, "wb")
-      outf:write(imgf:read("*a"))
-      outf:close()
+      local outf, oerr = io.open(imgname, "wb")
+      if outf then
+        outf:write(imgf:read("*a"))
+        outf:close()
+        imgf:close()
+        os.execute('rm -rf "' .. tmpdir .. '"')
+        local caption = el.attributes["alt"] or ""
+        return pandoc.Para({pandoc.Image({pandoc.Str(caption)}, imgname)})
+      end
       imgf:close()
-
-      -- Clean up temp files
-      os.execute("rm -rf " .. tmpdir)
-
-      -- Return an image element
-      local caption = el.attributes["alt"] or ""
-      return pandoc.Para({pandoc.Image({pandoc.Str(caption)}, imgname)})
     end
   end
 
   -- Clean up on failure
-  os.execute("rm -rf " .. tmpdir)
+  os.execute('rm -rf "' .. tmpdir .. '"')
   return nil
 end
 

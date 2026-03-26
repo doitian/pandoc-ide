@@ -36,14 +36,12 @@ function CodeBlock(el)
 
     -- Strip hidden lines (mdBook hides lines starting with "# ")
     local lines = {}
-    for line in el.text:gmatch("([^\n]*)\n?") do
+    for line in el.text:gmatch("[^\n]+") do
       if not (line:match("^# ") or line == "#") then
         table.insert(lines, line)
       end
     end
     el.text = table.concat(lines, "\n")
-    -- Trim leading/trailing blank lines left by stripping
-    el.text = el.text:gsub("^\n+", ""):gsub("\n+$", "")
   end
 
   return el
