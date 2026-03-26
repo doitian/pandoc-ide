@@ -49,18 +49,53 @@ function CodeBlock(el)
   return el
 end
 
-function RawBlock(el)
-  if el.format == "html" then
-    -- Convert <summary>Text</summary> to a bold paragraph
-    local summary = el.text:match("<summary>(.-)</summary>")
-    if summary then
-      return pandoc.Para({pandoc.Strong({pandoc.Str(summary)})})
-    end
-    -- Drop bare <details> and </details> tags
-    if el.text:match("^%s*</?details>%s*$") then
-      return {}
+--- Walk the full document block list to convert <summary>...</summary>
+--- sections into bold paragraphs and drop <details> wrapper tags.
+function Pandoc(doc)
+  local blocks = doc.blocks
+  local new_blocks = {}
+  local i = 1
+  while i <= #blocks do
+    local b = blocks[i]
+    if b.t == "RawBlock" and b.format == "html" then
+      local text = b.text
+      -- Drop <details> and </details> tags
+      if text:match("^%s*</?details>%s*$") then
+        i = i + 1
+      -- Handle self-contained <summary>Text</summary>
+      elseif text:match("<summary>(.-)</summary>") then
+        local summary = text:match("<summary>(.-)</summary>")
+        table.insert(new_blocks, pandoc.Para({pandoc.Strong({pandoc.Str(summary)})}))
+        i = i + 1
+      -- Handle split <summary> tag: make the next block bold, drop </summary>
+      elseif text:match("^%s*<summary>%s*$") then
+        i = i + 1
+        -- Collect blocks until </summary>
+        while i <= #blocks do
+          local nb = blocks[i]
+          if nb.t == "RawBlock" and nb.format == "html" and nb.text:match("^%s*</summary>%s*$") then
+            i = i + 1
+            break
+          end
+          -- Make the summary content bold
+          if nb.t == "Plain" or nb.t == "Para" then
+            table.insert(new_blocks, pandoc.Para({pandoc.Strong(nb.content)}))
+          else
+            table.insert(new_blocks, nb)
+          end
+          i = i + 1
+        end
+      else
+        table.insert(new_blocks, b)
+        i = i + 1
+      end
+    else
+      table.insert(new_blocks, b)
+      i = i + 1
     end
   end
+  doc.blocks = new_blocks
+  return doc
 end
 
-return {{CodeBlock = CodeBlock, RawBlock = RawBlock}}
+return {{CodeBlock = CodeBlock, Pandoc = Pandoc}}
