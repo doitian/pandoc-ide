@@ -26,7 +26,7 @@ RUN curl -fsSLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2
   && mv AtkinsonHyperlegible-*.otf /fonts/atkinson-hyperlegible
 
 RUN git clone --filter=tree:0 --quiet https://github.com/doitian/dotfiles-public /dotfiles-public \
-  && git -C /dotfiles-public checkout db09b0124d156ad4fa0d347edd4e3677df5bc8fd
+  && git -C /dotfiles-public checkout ef1c668989ebd488ccfdb0eab5efeaa2524d5868
 
 # Output ################################################################
 FROM pandoc/latex:latest-ubuntu as pandoc-ide
