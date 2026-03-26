@@ -51,13 +51,11 @@ RUN tlmgr install \
 
 COPY --from=ubuntu-builder \
   /fonts \
-  /.local/share/fonts
+  /usr/local/share/fonts
 
 COPY --from=ubuntu-builder \
   /dotfiles-public/pandoc \
-  /.pandoc
+  /usr/local/share/pandoc
 
-RUN ln -s /.pandoc /root/.pandoc \
-  && ln -s /.local /root/.local \
-  && fc-cache -f
+RUN fc-cache -f
 
