@@ -10,7 +10,7 @@ shift-heading-level-by: 0
 include-in-header:
   - ltj-alchar-quotes.tex
 filters:
-  - filters/mermaid.lua
+  - filters/mdbook-chapters.lua
   - filters/mdbook-code.lua
 input-files:
   - src/ch00-introduction.md

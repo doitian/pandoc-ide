@@ -22,7 +22,7 @@ CHAPTERS := \
 
 SRC_FILES := $(addprefix $(SRC_DIR)/,$(CHAPTERS))
 
-.PHONY: all download build clean
+.PHONY: all download mermaid build clean
 
 all: download build
 
@@ -37,8 +37,11 @@ $(SRC_DIR)/%.md:
 	@mkdir -p $(SRC_DIR)
 	curl $(CURL_OPTS) "$(REPO_RAW_URL)/$*.md" -o "$@"
 
-build: download
+mermaid: download
+	../bin/mermaid-preprocess $(SRC_FILES)
+
+build: mermaid
 	../bin/pandoc -d pandoc
 
 clean:
-	rm -rf $(SRC_DIR) *.pdf mermaid-*.png
+	rm -rf $(SRC_DIR) *.pdf

@@ -20,6 +20,8 @@ jobs:
         project: ${{fromJson(needs.list-projects.outputs.projects)}}
     steps:
       - uses: actions/checkout@v4
+      - name: Install mermaid-cli
+        run: npm install -g @mermaid-js/mermaid-cli
       - name: pandoc
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,81 @@
+#!/bin/sh
+# Preprocess markdown files: convert mermaid code blocks to inline images.
+#
+# Usage: mermaid-preprocess <file.md>...
+#
+# For each ```mermaid ... ``` block found, renders it to a PNG via mmdc
+# and replaces the block with a markdown image reference. Images are
+# placed next to the source file.
+#
+# Requires: mmdc (npm install -g @mermaid-js/mermaid-cli)
+
+set -eu
+
+if ! command -v mmdc >/dev/null 2>&1; then
+  echo "mermaid-preprocess: mmdc not found, skipping mermaid rendering" >&2
+  exit 0
+fi
+
+# Puppeteer needs --no-sandbox in CI / containerized environments
+PUPPETEER_CFG=$(mktemp --suffix=.json)
+printf '{"args":["--no-sandbox"]}\n' > "$PUPPETEER_CFG"
+cleanup_cfg() { rm -f "$PUPPETEER_CFG"; }
+trap cleanup_cfg EXIT
+
+for mdfile in "$@"; do
+  [ -f "$mdfile" ] || continue
+
+  # Quick check: skip files without mermaid blocks
+  grep -q '```mermaid' "$mdfile" || continue
+
+  dir=$(dirname "$mdfile")
+  base=$(basename "$mdfile" .md)
+  count=0
+  tmpfile=$(mktemp)
+
+  # State machine: read line by line
+  in_mermaid=false
+  mermaid_buf=""
+
+  while IFS= read -r line || [ -n "$line" ]; do
+    if [ "$in_mermaid" = false ]; then
+      if echo "$line" | grep -q '^```mermaid'; then
+        in_mermaid=true
+        mermaid_buf=""
+      else
+        printf '%s\n' "$line"
+      fi
+    else
+      if echo "$line" | grep -q '^```$'; then
+        in_mermaid=false
+        count=$((count + 1))
+        imgname="${base}-mermaid-${count}.png"
+        imgpath="${dir}/${imgname}"
+
+        # Write mermaid source to temp file and render
+        mmdfile=$(mktemp --suffix=.mmd)
+        printf '%s\n' "$mermaid_buf" > "$mmdfile"
+        if mmdc -i "$mmdfile" -o "$imgpath" -b transparent -w 800 -p "$PUPPETEER_CFG" >/dev/null 2>&1; then
+          printf '![]('"$imgname"')\n'
+        else
+          # On failure, keep original code block
+          printf '```mermaid\n%s\n```\n' "$mermaid_buf"
+          echo "mermaid-preprocess: warning: failed to render diagram $count in $mdfile" >&2
+        fi
+        rm -f "$mmdfile"
+      else
+        if [ -z "$mermaid_buf" ]; then
+          mermaid_buf="$line"
+        else
+          mermaid_buf="$mermaid_buf
+$line"
+        fi
+      fi
+    fi
+  done < "$mdfile" > "$tmpfile"
+
+  mv "$tmpfile" "$mdfile"
+  if [ "$count" -gt 0 ]; then
+    echo "mermaid-preprocess: rendered $count diagram(s) in $mdfile" >&2
+  fi
+done

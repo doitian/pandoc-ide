@@ -7,3 +7,8 @@
 % custom range (217) containing just the smart quotes and set it to ALchar.
 \ltjdefcharrange{217}{"2018-"201D}
 \ltjsetparameter{jacharrange={-217}}
+% Force Miscellaneous Symbols (U+2600-U+26FF) and Dingbats (U+2700-U+27BF)
+% to ALchar so emoji like ✅ (U+2705) and ❌ (U+274C) use the fallback chain
+% (Noto Color Emoji) instead of the CJK font which lacks them.
+\ltjdefcharrange{218}{"2600-"27BF}
+\ltjsetparameter{jacharrange={-218}}
