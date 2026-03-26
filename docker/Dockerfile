@@ -59,3 +59,14 @@ COPY --from=ubuntu-builder \
 RUN ln -s /.pandoc /root/.pandoc \
   && ln -s /.local /root/.local \
   && fc-cache -f
+
+# Install Node.js and mermaid-cli for rendering Mermaid diagrams in Lua filters
+RUN apt-get -q --no-allow-insecure-repositories update \
+  && DEBIAN_FRONTEND=noninteractive \
+     apt-get install --assume-yes --no-install-recommends \
+       nodejs=* \
+       npm=* \
+       chromium-browser=* \
+  && rm -rf /var/lib/apt/lists/* \
+  && npm install -g @mermaid-js/mermaid-cli \
+  && npm cache clean --force

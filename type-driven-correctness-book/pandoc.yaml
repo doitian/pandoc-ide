@@ -1,0 +1,37 @@
+defaults:
+  - xelatex-reprt
+metadata:
+  title: "Type-Driven Correctness in Rust"
+  author: "Rust Training Team"
+variables:
+  documentclass: scrbook
+toc: true
+shift-heading-level-by: 0
+filters:
+  - filters/mermaid.lua
+  - filters/mdbook-code.lua
+input-files:
+  - src/ch00-introduction.md
+  - part1.md
+  - src/ch01-the-philosophy-why-types-beat-tests.md
+  - part2.md
+  - src/ch02-typed-command-interfaces-request-determi.md
+  - src/ch03-single-use-types-cryptographic-guarantee.md
+  - src/ch04-capability-tokens-zero-cost-proof-of-aut.md
+  - src/ch05-protocol-state-machines-type-state-for-r.md
+  - src/ch06-dimensional-analysis-making-the-compiler.md
+  - src/ch07-validated-boundaries-parse-dont-validate.md
+  - src/ch08-capability-mixins-compile-time-hardware-.md
+  - src/ch09-phantom-types-for-resource-tracking.md
+  - src/ch15-const-fn-compile-time-correctness-proofs.md
+  - src/ch16-send-sync-compile-time-concurrency-proofs.md
+  - part3.md
+  - src/ch10-putting-it-all-together-a-complete-diagn.md
+  - src/ch17-redfish-applied-walkthrough.md
+  - src/ch18-redfish-server-walkthrough.md
+  - src/ch11-fourteen-tricks-from-the-trenches.md
+  - src/ch12-exercises.md
+  - part4.md
+  - src/ch13-reference-card.md
+  - src/ch14-testing-type-level-guarantees.md
+output-file: type-driven-correctness-book.pdf
