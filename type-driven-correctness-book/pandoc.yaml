@@ -1,5 +1,5 @@
 defaults:
-  - xelatex-reprt
+  - lualatex-zh-base
 metadata:
   title: "Type-Driven Correctness in Rust"
   author: "Rust Training Team"
