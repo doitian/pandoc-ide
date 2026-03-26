@@ -40,12 +40,13 @@ RUN apt-get -q --no-allow-insecure-repositories update \
        fonts-roboto-slab \
        fonts-jetbrains-mono \
        fonts-noto-cjk \
+       fonts-noto-color-emoji \
   && rm -rf /var/lib/apt/lists/*
 
 RUN tlmgr install \
       koma-script adjustbox tcolorbox collectbox ucs environ \
       trimspaces titling enumitem rsfs xecjk fvextra svg transparent \
-      xpatch changepage ifoddpage lineno haranoaji \
+      xpatch changepage ifoddpage lineno haranoaji luatexja \
   && TERM=dumb luaotfload-tool --update
 
 COPY --from=ubuntu-builder \
@@ -59,3 +60,4 @@ COPY --from=ubuntu-builder \
 RUN ln -s /.pandoc /root/.pandoc \
   && ln -s /.local /root/.local \
   && fc-cache -f
+
