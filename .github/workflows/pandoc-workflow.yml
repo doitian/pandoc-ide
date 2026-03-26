@@ -23,7 +23,11 @@ jobs:
       - name: pandoc
         run: |
           cd "${{ matrix.project }}"
-          ../bin/pandoc -d pandoc
+          if [ -f Makefile ]; then
+            make
+          else
+            ../bin/pandoc -d pandoc
+          fi
           cd ..
           mkdir output
           git ls-files -oz | xargs -0 -I % mv % output
