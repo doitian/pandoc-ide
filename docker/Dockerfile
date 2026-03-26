@@ -55,11 +55,9 @@ COPY --from=ubuntu-builder \
 
 COPY --from=ubuntu-builder \
   /dotfiles-public/pandoc \
-  /.pandoc
+  /usr/local/share/pandoc
 
-RUN ln -s /.pandoc /root/.pandoc \
-  && ln -s /.local /root/.local \
-  && fc-cache -f
+RUN fc-cache -f
 
 # Install Node.js and mermaid-cli for rendering Mermaid diagrams in Lua filters
 RUN apt-get -q --no-allow-insecure-repositories update \
