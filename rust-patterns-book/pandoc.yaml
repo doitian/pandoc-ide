@@ -1,0 +1,40 @@
+defaults:
+  - lualatex-zh-base
+metadata:
+  title: "Rust Patterns"
+  author: "Rust Training Team"
+variables:
+  documentclass: scrbook
+toc: true
+shift-heading-level-by: 0
+include-in-header:
+  - ltj-alchar-quotes.tex
+filters:
+  - filters/mermaid.lua
+  - filters/mdbook-code.lua
+input-files:
+  - src/ch00-introduction.md
+  - part1.md
+  - src/ch01-generics-the-full-picture.md
+  - src/ch02-traits-in-depth.md
+  - src/ch03-the-newtype-and-type-state-patterns.md
+  - src/ch04-phantomdata-types-that-carry-no-data.md
+  - part2.md
+  - src/ch05-channels-and-message-passing.md
+  - src/ch06-concurrency-vs-parallelism-vs-threads.md
+  - src/ch07-closures-and-higher-order-functions.md
+  - src/ch08-functional-vs-imperative-when-elegance-wins.md
+  - src/ch09-smart-pointers-and-interior-mutability.md
+  - part3.md
+  - src/ch10-error-handling-patterns.md
+  - src/ch11-serialization-zero-copy-and-binary-data.md
+  - src/ch12-unsafe-rust-controlled-danger.md
+  - src/ch13-macros-code-that-writes-code.md
+  - src/ch14-testing-and-benchmarking-patterns.md
+  - src/ch15-crate-architecture-and-api-design.md
+  - src/ch16-asyncawait-essentials.md
+  - src/ch17-exercises.md
+  - part4.md
+  - src/ch18-summary-and-reference-card.md
+  - src/ch19-capstone-project.md
+output-file: rust-patterns-book.pdf

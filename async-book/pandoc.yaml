@@ -1,0 +1,37 @@
+defaults:
+  - lualatex-zh-base
+metadata:
+  title: "Async Rust"
+  author: "Rust Training Team"
+variables:
+  documentclass: scrbook
+toc: true
+shift-heading-level-by: 0
+include-in-header:
+  - ltj-alchar-quotes.tex
+filters:
+  - filters/mermaid.lua
+  - filters/mdbook-code.lua
+input-files:
+  - src/ch00-introduction.md
+  - part1.md
+  - src/ch01-why-async-is-different-in-rust.md
+  - src/ch02-the-future-trait.md
+  - src/ch03-how-poll-works.md
+  - src/ch04-pin-and-unpin.md
+  - src/ch05-the-state-machine-reveal.md
+  - part2.md
+  - src/ch06-building-futures-by-hand.md
+  - src/ch07-executors-and-runtimes.md
+  - src/ch08-tokio-deep-dive.md
+  - src/ch09-when-tokio-isnt-the-right-fit.md
+  - src/ch10-async-traits.md
+  - part3.md
+  - src/ch11-streams-and-asynciterator.md
+  - src/ch12-common-pitfalls.md
+  - src/ch13-production-patterns.md
+  - src/ch14-exercises.md
+  - part4.md
+  - src/ch15-summary-and-reference-card.md
+  - src/ch16-capstone-project.md
+output-file: async-book.pdf
