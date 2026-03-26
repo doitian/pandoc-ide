@@ -21,6 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: pandoc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd "${{ matrix.project }}"
           if [ -f Makefile ]; then

@@ -30,9 +30,14 @@ all: download build
 
 download: $(SRC_FILES)
 
+CURL_OPTS := -fsSL
+ifdef GITHUB_TOKEN
+CURL_OPTS += -H "Authorization: token $(GITHUB_TOKEN)"
+endif
+
 $(SRC_DIR)/%.md:
 	@mkdir -p $(SRC_DIR)
-	curl -fsSL "$(REPO_RAW_URL)/$*.md" -o "$@"
+	curl $(CURL_OPTS) "$(REPO_RAW_URL)/$*.md" -o "$@"
 
 build: download
 	../bin/pandoc -d pandoc
