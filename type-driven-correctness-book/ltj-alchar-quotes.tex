@@ -9,27 +9,11 @@
 \ltjdefcharrange{217}{"2018-"201D,"2600-"27BF}
 \ltjsetparameter{jacharrange={-217}}
 
-% Override Highlighting environment: remove breakanywhere to prevent
+% Override Highlighting environment: disable ALL fvextra line-breaking options
+% (breaklines, breakanywhere, breaknonspaceingroup) to prevent
 % "TeX capacity exceeded [dest_names_size=131072]" in LuaLaTeX.
-% The base listings.tex uses breakanywhere which creates a potential break point
-% at every character, exhausting LuaTeX's 131072 destination name limit in
-% code-heavy documents. We keep breaklines (wraps at spaces) instead.
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakautoindent=false,breaknonspaceingroup,frame=single,framesep=8pt,rulecolor=\color[HTML]{aaaaaa},commandchars=\\\{\}}
-
-% Define \pandocbounded for pandoc >= 3.2.1 compatibility.
-% The custom default.latex template (from dotfiles-public) predates this macro.
-% Official definition from jgm/pandoc-templates common.latex:
-\makeatletter
-\@ifundefined{pandocbounded}{%
-  \newsavebox\pandoc@box
-  \newcommand*\pandocbounded[1]{% scales image to fit in text height/width
-    \sbox\pandoc@box{#1}%
-    \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
-    \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-    \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi
-    \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
-    \else\usebox{\pandoc@box}%
-    \fi
-  }%
-}{}
-\makeatother
+% The base listings.tex loads fvextra and uses breakanywhere, whose interaction
+% with hyperref creates a PDF destination per break point, exhausting LuaTeX's
+% hard-coded 131072 destination name limit in code-heavy documents.
+% Long code lines will extend into the margin instead of wrapping.
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{frame=single,framesep=8pt,rulecolor=\color[HTML]{aaaaaa},commandchars=\\\{\}}
