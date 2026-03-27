@@ -56,7 +56,8 @@ for mdfile in "$@"; do
         mmdfile=$(mktemp --suffix=.mmd)
         printf '%s\n' "$mermaid_buf" > "$mmdfile"
         if mmdc -i "$mmdfile" -o "$imgpath" -b transparent -w 800 -p "$PUPPETEER_CFG" >/dev/null 2>&1; then
-          printf '![]('"$imgname"')\n'
+          # Use path relative to working directory (not relative to the md file)
+          printf '![](%s)\n' "$imgpath"
         else
           # On failure, keep original code block
           printf '```mermaid\n%s\n```\n' "$mermaid_buf"
