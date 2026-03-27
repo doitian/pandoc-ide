@@ -8,9 +8,9 @@ This repo is a Docker-based document conversion toolkit ("Pandoc as Service"). T
 
 The `ghcr.io/doitian/pandoc-ide:latest` image is the core artifact. It is pre-built and available from GHCR; pulling it is much faster than building locally.
 
-- **Convert a manuscript to PDF:** `cd manuscript && sudo docker run --rm --volume "$(pwd):/data" ghcr.io/doitian/pandoc-ide -d pandoc`
-- **Use the `bin/pandoc` wrapper:** `cd manuscript && sudo /workspace/bin/pandoc -d pandoc` (equivalent to the above)
-- **Interactive shell in the container:** `sudo /workspace/bin/sh`
+- **Convert a manuscript to PDF:** `cd manuscript && docker run --rm --volume "$(pwd):/data" ghcr.io/doitian/pandoc-ide -d pandoc`
+- **Use the `bin/pandoc` wrapper:** `cd manuscript && /workspace/bin/pandoc -d pandoc` (equivalent to the above)
+- **Interactive shell in the container:** `/workspace/bin/sh`
 
 ### Docker-in-Docker caveats
 
@@ -19,11 +19,11 @@ The Cloud Agent VM runs inside a container. Docker requires:
 1. `fuse-overlayfs` storage driver (configured in `/etc/docker/daemon.json`)
 2. `iptables-legacy` (set via `update-alternatives`)
 3. `sudo dockerd` must be running before any `docker` commands
-4. All `docker` commands must use `sudo` (the `ubuntu` user is not in the docker group in fresh sessions)
+4. The `ubuntu` user is in the `docker` group, so `docker` commands do **not** need `sudo` (only `dockerd` startup does)
 
 ### Building the image locally
 
-`sudo docker build -t ghcr.io/doitian/pandoc-ide:latest /workspace/docker/` — note that the `tlmgr install` step depends on external TeX Live mirrors (FTP) which may be unreliable. Prefer pulling the pre-built image unless you are modifying the Dockerfile.
+`docker build -t ghcr.io/doitian/pandoc-ide:latest /workspace/docker/` — note that the `tlmgr install` step depends on external TeX Live mirrors (FTP) which may be unreliable. Prefer pulling the pre-built image unless you are modifying the Dockerfile.
 
 ### Lint / test / build
 
