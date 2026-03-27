@@ -9,6 +9,7 @@ RUN apt-get -q --no-allow-insecure-repositories update \
        curl=* \
        unzip=* \
        p7zip=* \
+       xz-utils=* \
        git=* \
   && rm -rf /var/lib/apt/lists/*
 
@@ -27,6 +28,10 @@ RUN curl -fsSLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2
 
 RUN git clone --filter=tree:0 --quiet https://github.com/doitian/dotfiles-public /dotfiles-public \
   && git -C /dotfiles-public checkout ef1c668989ebd488ccfdb0eab5efeaa2524d5868
+
+# pandoc-crossref v0.3.23a built for pandoc 3.9 (replaces stale v0.3.22 in base image)
+RUN curl -fsSL https://github.com/lierdakil/pandoc-crossref/releases/download/v0.3.23a/pandoc-crossref-Linux-X64.tar.xz \
+  | tar -xJ -C /usr/local/bin pandoc-crossref
 
 # Output ################################################################
 FROM pandoc/latex:latest-ubuntu as pandoc-ide
@@ -56,6 +61,10 @@ COPY --from=ubuntu-builder \
 COPY --from=ubuntu-builder \
   /dotfiles-public/pandoc \
   /usr/local/share/pandoc
+
+COPY --from=ubuntu-builder \
+  /usr/local/bin/pandoc-crossref \
+  /usr/local/bin/pandoc-crossref
 
 RUN fc-cache -f
 
