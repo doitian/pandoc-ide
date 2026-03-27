@@ -7,6 +7,8 @@ variables:
   documentclass: scrbook
 toc: true
 shift-heading-level-by: 0
+pdf-engine-opt:
+  - "--cnf-line=dest_names_size=500000"
 include-in-header:
   - ltj-alchar-quotes.tex
 filters:
