@@ -9,6 +9,13 @@
 \ltjdefcharrange{217}{"2018-"201D,"2600-"27BF}
 \ltjsetparameter{jacharrange={-217}}
 
+% Override Highlighting environment: remove breakanywhere to prevent
+% "TeX capacity exceeded [dest_names_size=131072]" in LuaLaTeX.
+% The base listings.tex uses breakanywhere which creates a potential break point
+% at every character, exhausting LuaTeX's 131072 destination name limit in
+% code-heavy documents. We keep breaklines (wraps at spaces) instead.
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakautoindent=false,breaknonspaceingroup,frame=single,framesep=8pt,rulecolor=\color[HTML]{aaaaaa},commandchars=\\\{\}}
+
 % Define \pandocbounded for pandoc >= 3.2.1 compatibility.
 % The custom default.latex template (from dotfiles-public) predates this macro.
 % Official definition from jgm/pandoc-templates common.latex:
