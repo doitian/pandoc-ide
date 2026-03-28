@@ -47,6 +47,28 @@ function CodeBlock(el)
   return el
 end
 
+local latex_image_heights = {
+  -- Pandoc's \pandocbounded wrapper runs away on these tall Mermaid PNGs in
+  -- LuaLaTeX, eventually exhausting PDF destinations during shipout.
+  ["src/ch01-generics-the-full-picture-mermaid-1.png"] = "75%",
+  ["src/ch04-phantomdata-types-that-carry-no-data-mermaid-1.png"] = "75%",
+  ["src/ch07-closures-and-higher-order-functions-mermaid-1.png"] = "75%",
+}
+
+function Image(el)
+  if FORMAT ~= "latex" and FORMAT ~= "beamer" then
+    return nil
+  end
+
+  local height = latex_image_heights[el.src]
+  if not height then
+    return nil
+  end
+
+  el.attributes.height = height
+  return el
+end
+
 --- Walk the full document block list to convert <summary>...</summary>
 --- sections into bold paragraphs and drop <details> wrapper tags.
 function Pandoc(doc)
@@ -96,4 +118,4 @@ function Pandoc(doc)
   return doc
 end
 
-return {{CodeBlock = CodeBlock, Pandoc = Pandoc}}
+return {{CodeBlock = CodeBlock, Image = Image, Pandoc = Pandoc}}
