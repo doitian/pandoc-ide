@@ -26,7 +26,7 @@ RUN curl -fsSLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2
   && mv AtkinsonHyperlegible-*.otf /fonts/atkinson-hyperlegible
 
 RUN git clone --filter=tree:0 --quiet https://github.com/doitian/dotfiles-public /dotfiles-public \
-  && git -C /dotfiles-public checkout ef1c668989ebd488ccfdb0eab5efeaa2524d5868
+  && git -C /dotfiles-public checkout 92d784ae23235e0b0672685ef68c6ab9506a2e59
 
 # Output ################################################################
 FROM pandoc/latex:latest-ubuntu as pandoc-ide
@@ -56,6 +56,14 @@ COPY --from=ubuntu-builder \
 COPY --from=ubuntu-builder \
   /dotfiles-public/pandoc \
   /usr/local/share/pandoc
+
+# Remove fvextra line-breaking options from listings.tex to prevent LuaTeX
+# "TeX capacity exceeded [dest_names_size=131072]" in code-heavy documents.
+# breakanywhere creates one PDF destination per character; breaklines creates
+# one per space — either exhausts LuaTeX's hard-coded 131072-entry limit.
+RUN sed -i \
+  's/breaklines,breakautoindent=false,breaknonspaceingroup,breakanywhere,//' \
+  /usr/local/share/pandoc/defaults/latex/listings.tex
 
 RUN fc-cache -f
 
