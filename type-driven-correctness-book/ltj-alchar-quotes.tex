@@ -8,12 +8,3 @@
 % - U+2600..U+27BF: Misc Symbols + Dingbats (✅ U+2705, ❌ U+274C → Noto Color Emoji)
 \ltjdefcharrange{217}{"2018-"201D,"2600-"27BF}
 \ltjsetparameter{jacharrange={-217}}
-
-% Override Highlighting environment: disable ALL fvextra line-breaking options
-% (breaklines, breakanywhere, breaknonspaceingroup) to prevent
-% "TeX capacity exceeded [dest_names_size=131072]" in LuaLaTeX.
-% The base listings.tex loads fvextra and uses breakanywhere, whose interaction
-% with hyperref creates a PDF destination per break point, exhausting LuaTeX's
-% hard-coded 131072 destination name limit in code-heavy documents.
-% Long code lines will extend into the margin instead of wrapping.
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{frame=single,framesep=8pt,rulecolor=\color[HTML]{aaaaaa},commandchars=\\\{\}}
