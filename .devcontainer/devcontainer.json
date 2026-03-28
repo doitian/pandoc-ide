@@ -1,4 +1,4 @@
 {
   "name": "Pandoc IDE",
-  "image": "ghcr.io/doitian/pandoc-ide:latest"
+  "image": "ghcr.io/doitian/pandoc-ide:dev-latest"
 }
