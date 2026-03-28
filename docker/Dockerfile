@@ -26,7 +26,7 @@ RUN curl -fsSLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2
   && mv AtkinsonHyperlegible-*.otf /fonts/atkinson-hyperlegible
 
 RUN git clone --filter=tree:0 --quiet https://github.com/doitian/dotfiles-public /dotfiles-public \
-  && git -C /dotfiles-public checkout 92d784ae23235e0b0672685ef68c6ab9506a2e59
+  && git -C /dotfiles-public checkout faa507cd55158f7aecbbc74100aec9d04ae4b492
 
 # Output ################################################################
 FROM pandoc/latex:latest-ubuntu as pandoc-ide
@@ -51,7 +51,7 @@ RUN tlmgr install \
 
 COPY --from=ubuntu-builder \
   /fonts \
-  /.local/share/fonts
+  /usr/local/share/fonts
 
 COPY --from=ubuntu-builder \
   /dotfiles-public/pandoc \
