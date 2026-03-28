@@ -43,7 +43,7 @@ mermaid: download
 	../bin/mermaid-preprocess $(SRC_FILES)
 
 build: mermaid
-	../bin/pandoc -d pandoc
+	pandoc -d pandoc --verbose
 
 clean:
 	rm -rf $(SRC_DIR) *.pdf
