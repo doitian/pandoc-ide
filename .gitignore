@@ -1,1 +1,5 @@
 *.pdf
+*.log
+*.aux
+*-debug.tex
+luatex.*/*.png
