@@ -3,13 +3,24 @@
 --- Handles:
 --- 1. Introduction numbering: The introduction chapter (before the first \part)
 ---    is marked as unnumbered so that subsequent numbered chapters start at 1,
----    matching the original chapter numbers in the heading text.
---- 2. Cross-references: Links to .md files (e.g., ch01-foo.md) used by mdBook
+---    with numbering provided by Pandoc.
+--- 2. Manual chapter prefixes: Leading chapter numbers in H1 text (e.g.,
+---    "1. Why Async") are stripped to avoid duplicated numbering in output.
+--- 3. Cross-references: Links to .md files (e.g., ch01-foo.md) used by mdBook
 ---    for inter-chapter navigation are rewritten to internal PDF anchors.
 
 -- State collected in pass 1
 local chapter_num_to_id = {}
 local all_headers = {}
+
+local function set_header_text_from_string(block, text)
+  local parsed = pandoc.read(text)
+  if parsed and parsed.blocks and parsed.blocks[1] and parsed.blocks[1].t == "Para" then
+    block.content = parsed.blocks[1].content
+  else
+    block.content = pandoc.Inlines({ pandoc.Str(text) })
+  end
+end
 
 -- Pass 1: Collect headers, mark introduction as unnumbered
 local function process_doc(doc)
@@ -33,6 +44,12 @@ local function process_doc(doc)
       local num = text:match("^(%d+)%.")
       if num then
         chapter_num_to_id[tonumber(num)] = block.identifier
+
+        -- Remove manual numeric prefix so Pandoc numbering is not duplicated.
+        local stripped = text:gsub("^%d+%.%s*", "", 1)
+        if stripped ~= "" then
+          set_header_text_from_string(block, stripped)
+        end
       end
     end
   end
